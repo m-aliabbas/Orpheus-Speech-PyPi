@@ -3,10 +3,10 @@ from setuptools import setup, find_packages
 
 setup(
     name="orpheus-speech",
-    version="0.1.1",
+    version="0.1.2",
     packages=find_packages(),
     install_requires=["snac", "vllm"],
-    author="Amu Varma",
+    author="Ali",
     author_email="amu@canopylabs.com",
     description="Orpheus Text-to-Speech System",
     long_description=open("README.md").read(),
