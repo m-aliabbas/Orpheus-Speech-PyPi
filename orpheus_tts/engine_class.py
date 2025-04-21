@@ -13,7 +13,7 @@ class OrpheusModel:
             max_model_len: Optional[int] = 16384 ,
             cpu_offload_gb: float = 0, # GiB
             gpu_memory_utilization: float = 0.90,
-            quantization: Optional[str] = "int8",
+            quantization: Optional[str] = None,
             max_seq_len_to_capture: int = 8192,
             enforce_eager: Optional[bool] = None
         ):
