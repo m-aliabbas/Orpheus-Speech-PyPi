@@ -187,7 +187,10 @@ class OrpheusModel:
         while True:
             token = token_queue.get()
             if token is None:
-                print('Breaking the Loop')
+                # print('Breaking the Loop')
+                print('Breaking the Loop',request_id)
+                self.engine.abort(request_id)
+                print('Request Aborted',request_id)
                 break
             yield token
 
