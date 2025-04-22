@@ -172,16 +172,27 @@ class OrpheusModel:
 
         token_queue = queue.Queue()
 
-        async def async_producer():
-            async for result in self.engine.generate(prompt=prompt_string, sampling_params=sampling_params, request_id=request_id):
-                # Place each token text into the queue.
-                token_queue.put(result.outputs[0].text)
+        # async def async_producer():
+        #     async for result in self.engine.generate(prompt=prompt_string, sampling_params=sampling_params, request_id=request_id):
+        #         # Place each token text into the queue.
+        #         token_queue.put(result.outputs[0].text)
 
-                
-            print('Breaking the Loop',request_id)
-            await self.engine.abort(request_id)
-            print('Request Aborted',request_id)
-            token_queue.put(None)  # Sentinel to indicate completion.
+
+        #     print('Breaking the Loop',request_id)
+        #     await self.engine.abort(request_id)
+        #     print('Request Aborted',request_id)
+        #     token_queue.put(None)  # Sentinel to indicate completion.
+        async def async_producer():
+            try:
+                async for result in self.engine.generate(prompt=prompt_string, sampling_params=sampling_params, request_id=request_id):
+                    # Place each token text into the queue.
+                    token_queue.put(result.outputs[0].text)
+                    
+                print('Request completed normally:', request_id)
+            except Exception as e:
+                print(f"Error in request {request_id}: {e}")
+            finally:
+                token_queue.put(None)  # Sentinel to indicate completion regardless of how we got here
 
         def run_async():
             asyncio.run(async_producer())
