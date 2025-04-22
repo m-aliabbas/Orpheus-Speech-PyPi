@@ -194,8 +194,13 @@ class OrpheusModel:
             finally:
                 token_queue.put(None)  # Sentinel to indicate completion regardless of how we got here
 
+        # def run_async():
+        #     asyncio.run(async_producer())
         def run_async():
-            asyncio.run(async_producer())
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            loop.run_until_complete(async_producer())
+            loop.close()
 
         thread = threading.Thread(target=run_async)
         thread.start()
