@@ -176,6 +176,11 @@ class OrpheusModel:
             async for result in self.engine.generate(prompt=prompt_string, sampling_params=sampling_params, request_id=request_id):
                 # Place each token text into the queue.
                 token_queue.put(result.outputs[0].text)
+
+                
+            print('Breaking the Loop',request_id)
+            await self.engine.abort(request_id)
+            print('Request Aborted',request_id)
             token_queue.put(None)  # Sentinel to indicate completion.
 
         def run_async():
@@ -188,9 +193,9 @@ class OrpheusModel:
             token = token_queue.get()
             if token is None:
                 # print('Breaking the Loop')
-                print('Breaking the Loop',request_id)
-                self.engine.abort(request_id)
-                print('Request Aborted',request_id)
+                
+                
+                
                 break
             yield token
 
